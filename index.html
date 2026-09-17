@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deck — a toast stack you can flick away</title>
+  <meta name="description" content="Deck is a zero-dependency toast stack: notifications tuck behind each other, fan out on hover and dismiss with the speed of your swipe. Accessible, MIT licensed.">
+  <meta property="og:title" content="Deck — a toast stack you can flick away">
+  <meta property="og:description" content="Toasts that stack, fan out and flick away. Zero dependencies, MIT.">
+  <meta property="og:image" content="og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./deck.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#">Deck<span>.</span></a>
+    <nav aria-label="Project">
+      <span class="meta">MIT · 0 deps</span>
+      <a href="https://github.com/YagnikBarasiya23/deck-toast-stack">GitHub</a>
+      <a href="https://www.yagnikbarasiya.com/components">More components</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="eyebrow">Toast stack</p>
+      <h1 id="hero-title">Notifications that <em>stack</em>, then get out of the way.</h1>
+      <p class="lede">New toasts land in front and older ones tuck behind. Hover or tab in and the stack fans out, with every timer paused. Swipe one sideways — a slow drag springs back, a quick flick sends it off.</p>
+    </section>
+
+    <section class="stage" aria-labelledby="try-title">
+      <h2 id="try-title" class="stage-label">Try it</h2>
+      <div class="controls" role="group" aria-label="Show a notification">
+        <button type="button" data-demo="saved">Saved</button>
+        <button type="button" data-demo="failed">Upload failed</button>
+        <button type="button" data-demo="message">New message</button>
+        <button type="button" data-demo="promise">Publish (loading)</button>
+        <button type="button" data-demo="burst">Burst of 5</button>
+        <button type="button" data-demo="clear" class="quiet">Clear all</button>
+      </div>
+      <p class="hint">Press <kbd>Alt</kbd> + <kbd>T</kbd> to jump to the newest toast, <kbd>Esc</kbd> to dismiss it.</p>
+    </section>
+
+    <section class="tune" aria-labelledby="tune-title">
+      <h2 id="tune-title">Setup</h2>
+      <label>Position
+        <select id="position">
+          <option value="bottom-right">Bottom right</option>
+          <option value="bottom-center">Bottom centre</option>
+          <option value="bottom-left">Bottom left</option>
+          <option value="top-right">Top right</option>
+          <option value="top-center">Top centre</option>
+          <option value="top-left">Top left</option>
+        </select>
+      </label>
+      <label>Visible in stack <output id="max-out">3</output>
+        <input type="range" id="max" min="1" max="6" value="3">
+      </label>
+      <label>Duration <output id="duration-out">5.0 s</output>
+        <input type="range" id="duration" min="2000" max="12000" step="500" value="5000">
+      </label>
+    </section>
+
+    <section class="usage" aria-labelledby="usage-title">
+      <h2 id="usage-title">Use it</h2>
+<pre><code>&lt;link rel="stylesheet" href="deck.css"&gt;
+
+&lt;script type="module"&gt;
+  import Deck from './deck.js';
+
+  const toasts = new Deck({ position: 'bottom-right' });
+
+  toasts.success('Changes saved');
+  toasts.error('Upload failed', {
+    message: 'report.pdf is larger than 10 MB.',
+    action: { label: 'Retry', onClick: retry },
+  });
+  toasts.promise(publish(), { loading: 'Publishing…', success: 'Published' });
+&lt;/script&gt;</code></pre>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>MIT © 2026 <a href="https://www.yagnikbarasiya.com">Yagnik Barasiya</a></span>
+    <span>Respects reduced motion · errors are announced assertively</span>
+  </footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

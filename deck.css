@@ -1,0 +1,119 @@
+/* Deck — MIT © 2026 Yagnik Barasiya. Toasts move with transform; fades use opacity. */
+.deck {
+  --deck-width: 360px;
+  --deck-inset: 20px;
+  --deck-bg: #fff;
+  --deck-fg: #111;
+  --deck-muted: #666;
+  --deck-border: rgba(0, 0, 0, .08);
+  --deck-radius: 14px;
+  --deck-success: #16a34a;
+  --deck-error: #dc2626;
+  --deck-info: #2563eb;
+  position: fixed;
+  z-index: 2147483000;
+  width: min(var(--deck-width), calc(100vw - 2 * var(--deck-inset)));
+  outline: none;
+}
+.deck[data-position^="top"] { top: var(--deck-inset); }
+.deck[data-position^="bottom"] { bottom: var(--deck-inset); }
+.deck[data-position$="right"] { right: var(--deck-inset); }
+.deck[data-position$="left"] { left: var(--deck-inset); }
+.deck[data-position$="center"] { left: 50%; translate: -50% 0; }
+
+.deck-list {
+  position: relative;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deck-toast {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  padding: 14px 14px 16px;
+  border: 1px solid var(--deck-border);
+  border-radius: var(--deck-radius);
+  background: var(--deck-bg);
+  color: var(--deck-fg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .12), 0 2px 6px rgba(0, 0, 0, .06);
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+  will-change: transform;
+  transition: opacity .3s ease;
+}
+/* The peeking edge stays put while a toast behind shrinks. */
+.deck[data-position^="bottom"] .deck-toast { bottom: 0; transform-origin: 50% 0; }
+.deck[data-position^="top"] .deck-toast { top: 0; transform-origin: 50% 100%; }
+.deck-toast.is-dragging { cursor: grabbing; transition: none; }
+.deck-toast.is-hidden { opacity: 0; pointer-events: none; }
+.deck-toast.is-leaving { pointer-events: none; }
+
+/* Toasts tucked behind the front one hide their content so only the edge reads. */
+.deck-toast > * { transition: opacity .25s ease; }
+.deck-toast.is-behind > :not(.deck-timer) { opacity: 0; }
+
+.deck-icon { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; }
+.deck-icon svg { width: 16px; height: 16px; }
+.deck-toast[data-tone="success"] .deck-icon { color: var(--deck-success); background: color-mix(in srgb, var(--deck-success) 14%, transparent); }
+.deck-toast[data-tone="error"] .deck-icon { color: var(--deck-error); background: color-mix(in srgb, var(--deck-error) 14%, transparent); }
+.deck-toast[data-tone="info"] .deck-icon { color: var(--deck-info); background: color-mix(in srgb, var(--deck-info) 14%, transparent); }
+.deck-toast[data-tone="loading"] .deck-icon { color: var(--deck-muted); }
+.deck-toast[data-tone="loading"] .deck-icon svg { animation: deck-spin .8s linear infinite; }
+@keyframes deck-spin { to { transform: rotate(360deg); } }
+
+.deck-body { min-width: 0; }
+.deck-title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.35; }
+.deck-message { margin: 2px 0 0; font-size: 13px; line-height: 1.45; color: var(--deck-muted); }
+.deck-actions:empty { display: none; }
+.deck-action,
+.deck-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.deck-action {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--deck-fg) 8%, transparent);
+}
+.deck-close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: var(--deck-muted);
+}
+.deck-close svg { width: 14px; height: 14px; }
+.deck-action:hover, .deck-close:hover { background: color-mix(in srgb, var(--deck-fg) 12%, transparent); color: var(--deck-fg); }
+.deck-action:focus-visible, .deck-close:focus-visible { outline: 2px solid var(--deck-info); outline-offset: 1px; }
+
+.deck-timer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: .18;
+  transform-origin: 0 50%;
+}
+.deck.is-expanded .deck-timer { opacity: .1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-toast, .deck-toast > * { transition: none; }
+  .deck-toast[data-tone="loading"] .deck-icon svg { animation-duration: 2.4s; }
+}

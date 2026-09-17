@@ -1,0 +1,26 @@
+{
+  "name": "deck-toast-stack",
+  "version": "1.0.0",
+  "description": "A toast stack that fans out on hover and flicks away with the speed of your swipe. Zero dependencies.",
+  "type": "module",
+  "main": "deck.js",
+  "exports": {
+    ".": "./deck.js",
+    "./deck.css": "./deck.css"
+  },
+  "files": ["deck.js", "deck.css"],
+  "keywords": ["toast", "notification", "snackbar", "swipe", "animation", "vanilla-js"],
+  "author": "Yagnik Barasiya (https://www.yagnikbarasiya.com)",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/YagnikBarasiya23/deck-toast-stack.git" },
+  "homepage": "https://yagnikbarasiya23.github.io/deck-toast-stack/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}
